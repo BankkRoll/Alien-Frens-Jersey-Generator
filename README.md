@@ -1,1 +1,2 @@
-# https-frensjerseys.xyz
+# Alien Frens Jerseys Generator!
+Special thanks to @VictorBirkeland for the jerseys!
