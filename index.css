@@ -1,0 +1,179 @@
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  cursor: crosshair;
+}
+input[type="file"] {
+  display: none;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 42vh;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  cursor: crosshair;
+
+}
+header h1 {
+  font-size: calc(3rem + 3vw);
+  line-height: 100%;
+  margin: 0;
+  cursor: crosshair;
+
+}
+header p {
+  text-align: center;
+  max-width: 80%;
+  width: 50ex;
+  font-size: calc(1rem + .5vw);
+  line-height: 138%;
+  cursor: crosshair;
+}
+header p1 {
+  text-align: center;
+  max-width: 80%;
+  width: 50ex;
+  font-size: calc(.5rem + .5vw);
+  line-height: 138%;
+  cursor: crosshair;
+}
+main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+  cursor: crosshair;
+}
+canvas  {
+  display: block;
+  width:62vmin;
+  height:62vmin;
+  margin: auto;
+  border: 1rem solid white;
+  box-shadow: 0 0 1rem 0 rgba(0,0,0,0.1);
+  cursor: crosshair;
+}
+overlay- {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin-left: calc(50% - 31vmin);
+  pointer-events: none;
+}
+overlay- img {
+  display: block;
+  width:62vmin;
+  height:62vmin;
+  pointer-events: none;
+  background: #f2f2f2;
+  flex: none;
+}
+overlay- img.active {
+  background: transparent;
+}
+overlay- img:not(.active) {
+  transform: scale(.618);
+}
+
+button {
+  border: 0;
+  padding: 1rem;
+  background: #eee;
+  font-size: calc(1rem + .5vw);
+  font-weight: bold;
+  outline: none;
+  color: #999;
+  cursor: pointer;
+}
+
+button:hover {
+  color: #666;
+}
+.uploadBtn {
+  border: 0;
+  padding: 1rem;
+  background: #eee;
+  font-size: calc(1rem + .5vw);
+  font-weight: bold;
+  outline: none;
+  color: #999;
+  cursor: pointer;
+}
+
+.uploadBtn:hover {
+  color: #666;
+}
+
+button1 {
+  border: 0;
+  padding: .2rem;
+  background: #eee;
+  font-size: calc(.4rem + .2vw);
+  font-weight: bold;
+  outline: none;
+  color: #999;
+  cursor: pointer;
+}
+
+button1:hover {
+  color: #666;
+}
+
+controls- {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+footer{
+    bottom: 0;
+    position: flex;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.footer {
+    background: #404040;
+    height: 20px;
+    margin: auto;
+    width: 100%;
+    text-align:center;
+    padding:10px;
+    color:#ffffff;
+    overflow-x: hidden;
+}
+@media only screen and (max-width:600px) { 
+  header {
+    height: max-content;
+    margin: 20px;
+  }
+  header h1{
+    font-size: xx-large;
+  }
+  overlay- ,main{
+  height: 62vh;
+  }
+  controls-{
+    margin-bottom: 0px;
+  }
+  .uploadBtn,button{
+    font-size: medium;;
+  }
+}
