@@ -113,11 +113,11 @@ export default function Home() {
         <meta name="designer" content="Bankkroll" />
         <meta name="copyright" content="BR Labs - Bankkroll" />
         <meta name="owner" content="Bankkroll" />
-        <meta name="url" content="https://frensjerseys.xyz/" />
-        <meta name="identifier-URL" content="https://frensjerseys.xyz" />
+        <meta name="url" content="https://frensjerseys.vercel.app//" />
+        <meta name="identifier-URL" content="https://frensjerseys.vercel.app/" />
         <meta name="og:title" content="Alien Frens Jersey Generator" />
         <meta name="og:type" content="Generator" />
-        <meta name="og:url" content="https://frensjerseys.xyz" />
+        <meta name="og:url" content="https://frensjerseys.vercel.app/" />
         <meta name="og:image" content="https://i.ibb.co/BrjvgvW/imageedit-8-3480955811.png" />
         <meta name="og:site_name" content="Alien Frens Jersey Generator" />
         <meta name="og:description" content="Alien Frens Jersey Generator. Developed with ❤️ by: Bankkroll.eth" />
