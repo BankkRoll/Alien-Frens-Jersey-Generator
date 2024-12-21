@@ -1,8 +1,8 @@
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
 import Head from "next/head";
 import { useEffect, useState, useRef } from 'react';
 import toast from "react-hot-toast";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
 export default function Home() {
   const [frames, setFrames] = useState<string[]>([]);
@@ -12,9 +12,10 @@ export default function Home() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setFrames(Array.from({ length: 39 }, (_, i) => `/frames/${i + 1}.png`));
+    setFrames(Array.from({ length: 39 }, (_, i) => `/frames/${39 - i}.png`));
 
     const defaultImage = new Image();
     defaultImage.onload = () => {
@@ -85,11 +86,11 @@ export default function Home() {
       const dataUrl = canvas.toDataURL();
       const a = document.createElement('a');
       a.href = dataUrl;
-      a.download = 'my-custom-avatar.png';
+      a.download = 'my-custom-jersey.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      toast.success('Image downloaded successfully.');
+      toast.success('Jersey downloaded successfully.');
     } else {
       toast.error('Canvas is not available.');
     }
@@ -97,8 +98,11 @@ export default function Home() {
 
   const selectFrame = (index: number) => {
     setCurrentFrame(index);
+    if (scrollContainerRef.current) {
+      const selectedElement = scrollContainerRef.current.children[index] as HTMLElement;
+      selectedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
   };
-
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
@@ -127,43 +131,39 @@ export default function Home() {
       <Header />
 
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-500"></div>
         </div>
       )}
 
-      <main className="flex-1 max-h-screen flex flex-col lg:flex-row items-start justify-center p-8">
-        <div className="w-full lg:w-1/2 overflow-y-auto pr-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1 max-h-[90vh] lg:max-h-[60vh] mb-8 lg:mb-0">
-          {frames.map((frame, index) => (
-            <img
-              key={index}
-              className="mb-4 cursor-pointer object-cover hover:opacity-75 transition-opacity duration-200"
-              src={frame}
-              alt={`Frame ${index}`}
-              onClick={() => selectFrame(index)}
-            />
-          ))}
-        </div>
-
-        <div className="w-full lg:w-1/2 pl-4 flex flex-col items-center p-4 rounded-md">
+      <main className="flex-1 flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8 space-y-8 lg:space-y-0 lg:space-x-8">
+        <div className="w-full lg:w-1/2 flex flex-col items-center p-4 rounded-md bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg order-2 lg:order-1">
           <canvas
             ref={canvasRef}
-            className="border-2 border-gray-700 mb-4 max-w-full lg:max-w-none"
+            className="border-2 border-gray-700 mb-4 w-full max-w-md rounded-lg shadow-xl"
             width="500"
             height="500"
           ></canvas>
 
-          <label className="py-2 px-4 bg-gray-700 text-gray-300 border border-gray-600 rounded-lg shadow-md hover:bg-gray-600 hover:text-gray-200 cursor-pointer mt-4 transition-colors duration-200">
-            UPLOAD
-            <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
-          </label>
+          <div className="flex space-x-4 mt-4">
+            <label className="py-2 px-4 bg-gray-700 text-gray-300 border border-gray-600 rounded-lg shadow-md hover:bg-gray-600 hover:text-gray-200 cursor-pointer transition-colors duration-200 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+              </svg>
+              UPLOAD
+              <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+            </label>
 
-          <button
-            onClick={downloadImage}
-            className="py-2 px-4 bg-gray-700 text-gray-300 rounded-lg shadow-md hover:bg-gray-600 hover:text-gray-200 focus:outline-none mt-4 transition-colors duration-200"
-          >
-            DOWNLOAD
-          </button>
+            <button
+              onClick={downloadImage}
+              className="py-2 px-4 bg-gray-700 text-gray-300 rounded-lg shadow-md hover:bg-gray-600 hover:text-gray-200 focus:outline-none transition-colors duration-200 flex items-center justify-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+              DOWNLOAD
+            </button>
+          </div>
 
           <div className="hidden">
             <img
@@ -172,6 +172,35 @@ export default function Home() {
               src={frames[currentFrame]}
               alt={`Frame ${currentFrame}`}
             />
+          </div>
+        </div>
+
+        <div className="w-full lg:w-1/2 order-1 lg:order-2">
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-auto overflow-y-hidden whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 pb-4"
+          >
+            {frames.map((frame, index) => (
+              <div
+                key={index}
+                className="inline-block mr-2 last:mr-0 relative group"
+              >
+                <img
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-cover cursor-pointer rounded-lg shadow-lg transition-all duration-200 border-2 border-transparent hover:opacity-75"
+                  src={frame}
+                  alt={`Frame ${index}`}
+                  onClick={() => selectFrame(index)}
+                  style={{
+                    borderColor: currentFrame === index ? '#60A5FA' : 'transparent',
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <span className="bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm">
+                    {index + 1}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>
