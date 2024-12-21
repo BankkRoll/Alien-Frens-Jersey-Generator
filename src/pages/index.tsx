@@ -12,7 +12,6 @@ export default function Home() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setFrames(Array.from({ length: 39 }, (_, i) => `/frames/${39 - i}.png`));
@@ -98,10 +97,15 @@ export default function Home() {
 
   const selectFrame = (index: number) => {
     setCurrentFrame(index);
-    if (scrollContainerRef.current) {
-      const selectedElement = scrollContainerRef.current.children[index] as HTMLElement;
-      selectedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
+    const image = new Image();
+    image.onload = () => {
+      const ctx = canvasRef.current?.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
+    };
+    image.src = frames[index];
   };
 
   return (
@@ -176,26 +180,23 @@ export default function Home() {
         </div>
 
         <div className="w-full lg:w-1/2 order-1 lg:order-2">
-          <div 
-            ref={scrollContainerRef}
-            className="overflow-x-auto overflow-y-hidden whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 pb-4"
-          >
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 p-2">
             {frames.map((frame, index) => (
               <div
                 key={index}
-                className="inline-block mr-2 last:mr-0 relative group"
+                className="relative group cursor-pointer"
+                onClick={() => selectFrame(index)}
               >
                 <img
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-cover cursor-pointer rounded-lg shadow-lg transition-all duration-200 border-2 border-transparent hover:opacity-75"
+                  className="w-full h-auto object-cover rounded-lg shadow-lg transition-all duration-200 border-2"
                   src={frame}
                   alt={`Frame ${index}`}
-                  onClick={() => selectFrame(index)}
                   style={{
                     borderColor: currentFrame === index ? '#60A5FA' : 'transparent',
                   }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <span className="bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm">
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black bg-opacity-50 rounded-lg">
+                  <span className="text-white text-sm font-bold">
                     {index + 1}
                   </span>
                 </div>
