@@ -180,15 +180,41 @@ export default function Home() {
         </div>
 
         <div className="w-full lg:w-1/2 order-1 lg:order-2">
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 p-2">
+          {/* Scrolling row for smaller screens */}
+          <div className="lg:hidden overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 pb-4">
             {frames.map((frame, index) => (
               <div
                 key={index}
-                className="relative group cursor-pointer"
+                className="inline-block mr-2 last:mr-0 relative group cursor-pointer"
                 onClick={() => selectFrame(index)}
               >
                 <img
-                  className="w-full h-auto object-cover rounded-lg shadow-lg transition-all duration-200 border-2"
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg shadow-lg transition-all duration-200 border-2"
+                  src={frame}
+                  alt={`Frame ${index}`}
+                  style={{
+                    borderColor: currentFrame === index ? '#60A5FA' : 'transparent',
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black bg-opacity-50 rounded-lg">
+                  <span className="text-white text-sm font-bold">
+                    {index + 1}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Responsive grid for larger screens */}
+          <div className="hidden lg:grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 p-2">
+            {frames.map((frame, index) => (
+              <div
+                key={index}
+                className="relative group cursor-pointer aspect-square"
+                onClick={() => selectFrame(index)}
+              >
+                <img
+                  className="w-full h-full object-cover rounded-lg shadow-lg transition-all duration-200 border-2"
                   src={frame}
                   alt={`Frame ${index}`}
                   style={{
